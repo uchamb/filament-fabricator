@@ -2,17 +2,20 @@
 
 namespace Z3d0X\FilamentFabricator\Resources\PageResource\Pages;
 
-use Filament\Pages\Actions;
-use Filament\Pages\Actions\Action;
+use App\Filament\Actions\Forms\LocaleSwitcher;
+use Filament\Actions;
+use \Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Pboivin\FilamentPeek\Pages\Actions\PreviewAction;
+use Z3d0X\FilamentFabricator\Concerns\EnablesDataMutation;
 use Z3d0X\FilamentFabricator\Facades\FilamentFabricator;
 use Z3d0X\FilamentFabricator\Models\Contracts\Page as PageContract;
 use Z3d0X\FilamentFabricator\Resources\PageResource;
+use App\Concerns\EditRecord\Translatable;
 
 class EditPage extends EditRecord
 {
-    use Concerns\HasPreviewModal;
+    use Concerns\HasPreviewModal, Translatable, EnablesDataMutation;
 
     protected static string $resource = PageResource::class;
 
@@ -24,6 +27,8 @@ class EditPage extends EditRecord
     protected function getActions(): array
     {
         return [
+            LocaleSwitcher::make(),
+
             PreviewAction::make(),
 
             Actions\ViewAction::make()
