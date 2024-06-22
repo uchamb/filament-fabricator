@@ -37,7 +37,8 @@ class Page extends Model implements Contract, HasMedia
         'seo_title',
         'seo_description',
         'og_title',
-        'og_description'
+        'og_description',
+        'noindex'
     ];
 
     protected $casts = [
