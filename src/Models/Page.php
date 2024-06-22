@@ -2,16 +2,20 @@
 
 namespace Z3d0X\FilamentFabricator\Models;
 
+use App\Models\Traits\ImageHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Z3d0X\FilamentFabricator\Models\Contracts\Page as Contract;
 use Spatie\Translatable\HasTranslations;
 
-class Page extends Model implements Contract
+class Page extends Model implements Contract, HasMedia
 {
-    use HasTranslations;
+    use HasTranslations, InteractsWithMedia, ImageHelpers;
 
     public function __construct(array $attributes = [])
     {
@@ -22,7 +26,7 @@ class Page extends Model implements Contract
         parent::__construct($attributes);
     }
 
-    protected array $translatable = ['title'];
+    protected array $translatable = ['title', 'seo_title', 'seo_description', 'og_title', 'og_description'];
 
     protected $fillable = [
         'title',
@@ -30,6 +34,10 @@ class Page extends Model implements Contract
         'blocks',
         'layout',
         'parent_id',
+        'seo_title',
+        'seo_description',
+        'og_title',
+        'og_description'
     ];
 
     protected $casts = [
@@ -58,5 +66,10 @@ class Page extends Model implements Contract
         return $this->hasMany(static::class, 'parent_id')
             ->select('id', 'slug', 'title', 'parent_id')
             ->with('allChildren:id,slug,title,parent_id');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+      $this->registerMediaConversionsFromImageHelpers($media, [ 'medium' ]);
     }
 }
