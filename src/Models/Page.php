@@ -2,7 +2,7 @@
 
 namespace Z3d0X\FilamentFabricator\Models;
 
-use App\Models\Traits\ImageHelpers;
+use Filament\Core\Models\Traits\ImageHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
